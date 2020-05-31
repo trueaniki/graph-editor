@@ -5,6 +5,7 @@ import {URL, REQUEST_OPTIONS} from './constants'
 import {v4 as uuid} from 'uuid'
 import axios from 'axios'
 import copyObj from "./copyObj";
+import './style.css'
 
 export default class Root extends React.Component {
 	constructor(props){

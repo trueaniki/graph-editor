@@ -1,0 +1,34 @@
+button {
+    display: inline-block;
+    background-color: black;
+    color: white;
+    font-weight: 700;
+    text-decoration: none;
+    user-select: none;
+    padding: .5em 2em;
+    outline: none;
+    border: 2px solid;
+    border-radius: 1px;
+    transition: 0.2s;
+}
+button:hover { background: rgb(100,100,100); }
+button:active { background: white; }
+
+input{
+    display: inline-block;
+    background-color: black;
+    color: white;
+    font-weight: 700;
+    text-decoration: none;
+    user-select: none;
+    padding: .5em 2em;
+    outline: none;
+    border: 2px solid;
+    border-radius: 1px;
+    transition: 0.2s;
+}
+
+
+body{
+    background-color: rgb(240,240,240);
+}

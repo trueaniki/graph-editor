@@ -4,6 +4,7 @@ import getId from "./getId"
 import {VERTEX_SHAPE, VERTEX_RADIUS, URL, URL2, REQUEST_OPTIONS} from './constants'
 import copyObj from "./copyObj";
 
+
 export default class Editor extends React.Component {
 
     constructor(props) {
@@ -180,7 +181,7 @@ export default class Editor extends React.Component {
         })
             .then(response => response.json()).catch(err => console.log(err))
             .then(data => {
-                alert(data);
+                data ? alert('Graph is full') : alert('Graph is not full');
             }).catch(err => console.log(err));
     }
     makeFullRequest(){
@@ -313,7 +314,15 @@ export default class Editor extends React.Component {
 
     createNewArc(vertex1, vertex2, isDirected = false) {
         //создание новой дуги и вычисление углов между ее вершинами
-        if(vertex1.arcs.filter(id1 => vertex2.arcs.some(id2 => id1 === id2)).length !== 0) {alert('exists');return;}
+        // if(vertex1.arcs.filter(id1 => vertex2.arcs.some(id2 => id1 === id2)).length !== 0 &&
+        //     vertex1.id === vertex2.id) {
+        //     alert('exists');return;
+        // }
+
+        if(vertex1.arcs.filter(id1 => vertex2.arcs.some(id2 => id1 === id2)).length !== 0 &&
+            vertex1.id !== vertex2.id) {
+            alert('exists');return;
+        }
         this.arcs.push({
             vertex1, vertex2, isDirected, id: getId(this.arcs.map(arc => arc.id)),
             angle12: {
