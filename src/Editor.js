@@ -55,7 +55,7 @@ export default class Editor extends React.Component {
     }
     eulerianCycleRequest(){
         let startNode = this.vertexes.filter(v => v.selected)[0] || this.vertexes[0];
-        fetch(`${URL}/api/v1/graph/${this.props.graphId}/eulerianCycle?startedNode=${startNode.id}`, {
+        fetch(`${URL}/api/v1/graph/${this.props.graphId}/eulerianCycle?startNode=${startNode.id}`, {
             method: 'GET',
             ...REQUEST_OPTIONS
         })
@@ -67,7 +67,7 @@ export default class Editor extends React.Component {
     }
     hamiltonianPathRequest(){
         let startNode = this.vertexes.filter(v => v.selected)[0] || this.vertexes[0];
-        fetch(`${URL}/api/v1/graph/${this.props.graphId}/hamiltonianPath?startedNode=${startNode.id}`, {
+        fetch(`${URL}/api/v1/graph/${this.props.graphId}/hamiltonianPath?startNode=${startNode.id}`, {
             method: 'GET',
             ...REQUEST_OPTIONS
         })
