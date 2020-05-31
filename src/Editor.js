@@ -241,17 +241,20 @@ export default class Editor extends React.Component {
     }
     findAllPathsRequest(){
         let selectedVertexes = this.vertexes.filter(vertex => vertex.selected).sort((v1, v2) => v2.timestamp - v1.timestamp);
+        // if(selectedVertexes.length === 2) {
+        //     fetch(`${URL}/api/v1/graph/${this.props.graphId}/allPath?fromNode=${selectedVertexes[0].id}&toNode=${selectedVertexes[1].id}` , {
+        //         method: 'GET',
+        //         ...REQUEST_OPTIONS
+        //     })
+        //         .then(response => response.json()).catch(err => console.log(err))
+        //         .then(data => {
+        //             if(data.paths !== null)
+        //                 alert(data.paths.map(path => path.map(vertex => vertex.id).join(',')).join('\n'));
+        //             else alert('no path');
+        //         }).catch(err => console.log(err));
+        // }
         if(selectedVertexes.length === 2) {
-            fetch(`${URL}/api/v1/graph/${this.props.graphId}/allPath?fromNode=${selectedVertexes[0].id}&toNode=${selectedVertexes[1].id}` , {
-                method: 'GET',
-                ...REQUEST_OPTIONS
-            })
-                .then(response => response.json()).catch(err => console.log(err))
-                .then(data => {
-                    if(data.paths !== null)
-                        alert(data.paths.map(path => path.map(vertex => vertex.id).join(',')).join('\n'));
-                    else alert('no path');
-                }).catch(err => console.log(err));
+            alert(selectedVertexes[0].id, selectedVertexes[1].id);
         }
     }
     findAllShortestPathsRequest(){
