@@ -2,6 +2,7 @@ import React from 'react'
 // import {v4 as uuid} from 'uuid'
 import getId from "./getId"
 import {VERTEX_SHAPE, VERTEX_RADIUS, URL, URL2, REQUEST_OPTIONS} from './constants'
+import copyObj from "./copyObj";
 
 export default class Editor extends React.Component {
 
@@ -23,7 +24,22 @@ export default class Editor extends React.Component {
         this.vertexes = this.props.graphs.find(graph => graph.id === this.props.graphId).vertexes;
         this.arcs = this.props.graphs.find(graph => graph.id === this.props.graphId).arcs;
     }
+    prepareGraph(graph) {
+        if(!graph) throw new Error(`graph array is not array: ${graph}`);
 
+        for (let vertex of graph.vertexes) {
+            vertex.arcs = [];
+            for (let arc of graph.arcs) {
+                if (arc.vertex1.id === vertex.id && arc.vertex2.id === vertex.id) {
+                    vertex.arcs.push(arc.id);
+                    vertex.arcs.push(arc.id);
+                } else if ((arc.vertex1.id === vertex.id || arc.vertex2.id === vertex.id)) {
+                    vertex.arcs.push(arc.id);
+                }
+            }
+        }
+        return graph;
+    }
     updateGraphRequest(){
         fetch(URL + '/api/v1/graph/' + this.props.graphId, {
             method: 'PUT',
@@ -129,6 +145,8 @@ export default class Editor extends React.Component {
             .then(response => response.json()).catch(err => console.log(err))
             .then(data => {
                 console.log('Editor.js -> planarReduction request: ', data);
+                this.props.setGraph(this.prepareGraph(data.planarGraph));
+                this.updateGraphRequest();
             }).catch(err => console.log(err));
     }
     isTreeRequest(){
@@ -234,6 +252,7 @@ export default class Editor extends React.Component {
     }
 
     getArcsFromId(ids) {
+        if(!ids) throw new Error(`ids array is not array: ${ids}`);
         return this.arcs.filter(arc => ids.some(id => id === arc.id));
     }
 
