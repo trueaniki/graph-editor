@@ -85,7 +85,7 @@ export default class Editor extends React.Component {
             .then(response => response.json()).catch(err => console.log(err))
             .then(data => {
                 console.log('Editor.js -> diameter request: ', data);
-                alert(data)
+                alert(data.diameter)
             }).catch(err => console.log(err));
     }
     findRadiusRequest(){
@@ -96,7 +96,7 @@ export default class Editor extends React.Component {
             .then(response => response.json()).catch(err => console.log(err))
             .then(data => {
                 console.log('Editor.js -> Radius request: ', data);
-                alert(data)
+                alert(data.radius)
             }).catch(err => console.log(err));
     }
     findCenterRequest(){
@@ -107,7 +107,7 @@ export default class Editor extends React.Component {
             .then(response => response.json()).catch(err => console.log(err))
             .then(data => {
                 console.log('Editor.js -> Center request: ', data);
-                alert(data)
+                alert(data.center.map(vertex => vertex.id).join(','))
             }).catch(err => console.log(err));
     }
     planarCheckRequest(){
