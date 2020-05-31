@@ -91,7 +91,11 @@ export default class Root extends React.Component {
 				});
 			}).catch(err => console.log(err));
     }
-
+	setGraph(graph) {
+		this.setState({
+			graphs: [graph, ...this.state.graphs.filter(g => g.id !== graph.id)]
+		});
+	}
 	render(){
 		return(
 			<div>
@@ -102,7 +106,11 @@ export default class Root extends React.Component {
 					graphId = {this.state.graphId}
                 />
 				{this.state.graphs.length !== 0 &&
-					<Editor graphId={this.state.graphId} graphs={this.state.graphs}/>
+					<Editor
+						graphId={this.state.graphId}
+						graphs={this.state.graphs}
+						setGraph={graph => this.setGraph(graph)}
+					/>
 				}
 			</div>
 		);

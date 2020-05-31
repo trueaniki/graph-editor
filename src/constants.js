@@ -1,4 +1,5 @@
 export const URL = 'http://127.0.0.1:8000';
+export const URL2 = 'http://127.0.0.1:9000';
 export const REQUEST_OPTIONS = {
     mode: 'cors',
     headers: {

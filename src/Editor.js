@@ -1,7 +1,8 @@
 import React from 'react'
 // import {v4 as uuid} from 'uuid'
 import getId from "./getId"
-import {VERTEX_SHAPE, VERTEX_RADIUS, URL, REQUEST_OPTIONS} from './constants'
+import {VERTEX_SHAPE, VERTEX_RADIUS, URL, URL2, REQUEST_OPTIONS} from './constants'
+import copyObj from "./copyObj";
 
 export default class Editor extends React.Component {
 
@@ -23,7 +24,22 @@ export default class Editor extends React.Component {
         this.vertexes = this.props.graphs.find(graph => graph.id === this.props.graphId).vertexes;
         this.arcs = this.props.graphs.find(graph => graph.id === this.props.graphId).arcs;
     }
+    prepareGraph(graph) {
+        if(!graph) throw new Error(`graph array is not array: ${graph}`);
 
+        for (let vertex of graph.vertexes) {
+            vertex.arcs = [];
+            for (let arc of graph.arcs) {
+                if (arc.vertex1.id === vertex.id && arc.vertex2.id === vertex.id) {
+                    vertex.arcs.push(arc.id);
+                    vertex.arcs.push(arc.id);
+                } else if ((arc.vertex1.id === vertex.id || arc.vertex2.id === vertex.id)) {
+                    vertex.arcs.push(arc.id);
+                }
+            }
+        }
+        return graph;
+    }
     updateGraphRequest(){
         fetch(URL + '/api/v1/graph/' + this.props.graphId, {
             method: 'PUT',
@@ -129,10 +145,11 @@ export default class Editor extends React.Component {
             .then(response => response.json()).catch(err => console.log(err))
             .then(data => {
                 console.log('Editor.js -> planarReduction request: ', data);
+                this.props.setGraph(this.prepareGraph(data.planarGraph));
+                this.updateGraphRequest();
             }).catch(err => console.log(err));
     }
     isTreeRequest(){
-        console.log('Editor.js -> isTreeRequest/125 this.props.graphs[0]: ', JSON.stringify(this.props.graphs[0]));
         fetch(URL + '/api/v1/graph/' + this.props.graphId + '/isTree', {
             method: 'GET',
             ...REQUEST_OPTIONS
@@ -143,28 +160,27 @@ export default class Editor extends React.Component {
                 data.isTree ? alert('Graph is tree') : alert('Graph is not tree');
             }).catch(err => console.log(err));
     }
-    cartesianRequest(){
-        let secondGraph = this.props.graphs
-            .find(g => g.name === prompt('Enter name of second graph'));
-        fetch(URL + '/api/v1/graph/' + this.props.graphId +',' + secondGraph.id + '/cartesian', {
-            method: 'GET',
+    isFullRequest(){
+        fetch(URL2 + '/api/nodejs/checkFull/', {
+            method: 'POST',
+            body: JSON.stringify(this.props.graphs.find(g => g.id === this.props.graphId)),
             ...REQUEST_OPTIONS
         })
             .then(response => response.json()).catch(err => console.log(err))
             .then(data => {
-                console.log('Editor.js -> isTree request: ', data);
+                alert(data);
             }).catch(err => console.log(err));
     }
-    tensorRequest(){
-        let secondGraph = this.props.graphs
-            .find(g => g.name === prompt('Enter name of second graph'));
-        fetch(URL + '/api/v1/graph/' + this.props.graphId +',' + secondGraph.id + '/cartesian', {
-            method: 'GET',
+    makeFullRequest(){
+        fetch(URL2 + '/api/nodejs/makeFull/', {
+            method: 'POST',
+            body: JSON.stringify(this.props.graphs.find(g => g.id === this.props.graphId)),
             ...REQUEST_OPTIONS
         })
             .then(response => response.json()).catch(err => console.log(err))
             .then(data => {
-                console.log('Editor.js -> isTree request: ', data);
+                this.props.setGraph(data);
+                this.updateGraphRequest();
             }).catch(err => console.log(err));
     }
     findShortestPathRequest(){
@@ -236,6 +252,7 @@ export default class Editor extends React.Component {
     }
 
     getArcsFromId(ids) {
+        if(!ids) throw new Error(`ids array is not array: ${ids}`);
         return this.arcs.filter(arc => ids.some(id => id === arc.id));
     }
 
@@ -602,8 +619,9 @@ export default class Editor extends React.Component {
                 <button onClick={this.planarCheckRequest.bind(this)}>Planar check</button>
                 <button onClick={this.planarReductionRequest.bind(this)}>Planar reduction</button>
                 <button onClick={this.isTreeRequest.bind(this)}>Is tree</button>
-                <button onClick={this.cartesianRequest.bind(this)}>Cartesian</button>
-                <button onClick={this.tensorRequest.bind(this)}>Tensor</button>
+                <button onClick={this.isFullRequest.bind(this)}>Is full</button>
+                <button onClick={this.makeFullRequest.bind(this)}>Make full</button>
+
             </div>
         );
     }
