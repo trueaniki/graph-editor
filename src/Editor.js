@@ -121,6 +121,16 @@ export default class Editor extends React.Component {
                 data.isPlanar ? alert('Graph is planar') : alert('Graph is not planar');
             }).catch(err => console.log(err));
     }
+    planarReductionRequest(){
+        fetch(URL + '/api/v1/graph/' + this.props.graphId + '/planarReduction', {
+            method: 'GET',
+            ...REQUEST_OPTIONS
+        })
+            .then(response => response.json()).catch(err => console.log(err))
+            .then(data => {
+                console.log('Editor.js -> planarReduction request: ', data);
+            }).catch(err => console.log(err));
+    }
     isTreeRequest(){
         console.log('Editor.js -> isTreeRequest/125 this.props.graphs[0]: ', JSON.stringify(this.props.graphs[0]));
         fetch(URL + '/api/v1/graph/' + this.props.graphId + '/isTree', {
@@ -131,6 +141,30 @@ export default class Editor extends React.Component {
             .then(data => {
                 console.log('Editor.js -> isTree request: ', data);
                 data.isTree ? alert('Graph is tree') : alert('Graph is not tree');
+            }).catch(err => console.log(err));
+    }
+    cartesianRequest(){
+        let secondGraph = this.props.graphs
+            .find(g => g.name === prompt('Enter name of second graph'));
+        fetch(URL + '/api/v1/graph/' + this.props.graphId +',' + secondGraph.id + '/cartesian', {
+            method: 'GET',
+            ...REQUEST_OPTIONS
+        })
+            .then(response => response.json()).catch(err => console.log(err))
+            .then(data => {
+                console.log('Editor.js -> isTree request: ', data);
+            }).catch(err => console.log(err));
+    }
+    tensorRequest(){
+        let secondGraph = this.props.graphs
+            .find(g => g.name === prompt('Enter name of second graph'));
+        fetch(URL + '/api/v1/graph/' + this.props.graphId +',' + secondGraph.id + '/cartesian', {
+            method: 'GET',
+            ...REQUEST_OPTIONS
+        })
+            .then(response => response.json()).catch(err => console.log(err))
+            .then(data => {
+                console.log('Editor.js -> isTree request: ', data);
             }).catch(err => console.log(err));
     }
     findShortestPathRequest(){
@@ -148,6 +182,21 @@ export default class Editor extends React.Component {
                 }).catch(err => console.log(err));
         }
     }
+    findAllPathsRequest(){
+        let selectedVertexes = this.vertexes.filter(vertex => vertex.selected).sort((v1, v2) => v2.timestamp - v1.timestamp);
+        if(selectedVertexes.length === 2) {
+            fetch(`${URL}/api/v1/graph/${this.props.graphId}/allPath?fromNode=${selectedVertexes[0].id}&toNode=${selectedVertexes[1].id}` , {
+                method: 'GET',
+                ...REQUEST_OPTIONS
+            })
+                .then(response => response.json()).catch(err => console.log(err))
+                .then(data => {
+                    if(data.paths !== null)
+                        alert(data.paths.map(path => path.map(vertex => vertex.id).join(',')).join('\n'));
+                    else alert('no path');
+                }).catch(err => console.log(err));
+        }
+    }
     findAllShortestPathsRequest(){
         let selectedVertexes = this.vertexes.filter(vertex => vertex.selected).sort((v1, v2) => v2.timestamp - v1.timestamp);
         if(selectedVertexes.length === 2) {
@@ -157,7 +206,7 @@ export default class Editor extends React.Component {
             })
                 .then(response => response.json()).catch(err => console.log(err))
                 .then(data => {
-                    if(data.path !== null)
+                    if(data.paths !== null)
                         alert(data.paths.map(path => path.map(vertex => vertex.id).join(',')).join('\n'));
                     else alert('no path');
                 }).catch(err => console.log(err));
@@ -534,11 +583,13 @@ export default class Editor extends React.Component {
                 <button onClick={this.handlePaintMode.bind(this)}>Paint</button>
                 <input type="text" placeholder="#000000" onChange={this.handleColorChange.bind(this)}
                        value={this.state.paintingColor}/>
+
                 <button onClick={() => this.showVertexIds = !this.showVertexIds}>Show vertexes ids</button>
                 <button onClick={this.handleVertexCount.bind(this)}>Vertexes count</button>
                 <button onClick={this.handleArcCount.bind(this)}>Arcs count</button>
                 <button onClick={this.handleVertexPower.bind(this)}>Vertex power</button>
                 <button onClick={this.findShortestPathRequest.bind(this)}>Find shortest path</button>
+                <button onClick={this.findAllPathsRequest.bind(this)}>Find all paths</button>
                 <button onClick={this.findAllShortestPathsRequest.bind(this)}>Find all shortest paths</button>
                 <button onClick={this.findDistance.bind(this)}>Find distance</button>
                 <button onClick={this.adjacencyMatrixRequest.bind(this)}>Adjacency matrix</button>
@@ -549,8 +600,10 @@ export default class Editor extends React.Component {
                 <button onClick={this.findRadiusRequest.bind(this)}>Find radius</button>
                 <button onClick={this.findCenterRequest.bind(this)}>Find center</button>
                 <button onClick={this.planarCheckRequest.bind(this)}>Planar check</button>
+                <button onClick={this.planarReductionRequest.bind(this)}>Planar reduction</button>
                 <button onClick={this.isTreeRequest.bind(this)}>Is tree</button>
-
+                <button onClick={this.cartesianRequest.bind(this)}>Cartesian</button>
+                <button onClick={this.tensorRequest.bind(this)}>Tensor</button>
             </div>
         );
     }
