@@ -669,8 +669,8 @@ export default class Editor extends React.Component {
                 <button onClick={this.planarReductionRequest.bind(this)}>Planar reduction</button>
                 <button onClick={this.isTreeRequest.bind(this)}>Is tree</button>
                 <button onClick={this.treeReductionRequest.bind(this)}>Tree reduction</button>
-                <button onClick={this.isFullRequest.bind(this)}>Is full</button>
-                <button onClick={this.makeFullRequest.bind(this)}>Make full</button>
+                {/*<button onClick={this.isFullRequest.bind(this)}>Is full</button>*/}
+                {/*<button onClick={this.makeFullRequest.bind(this)}>Make full</button>*/}
                 <button onClick={this.cartesianRequest.bind(this)}>Cartesian</button>
                 <button onClick={this.tensorRequest.bind(this)}>Tensor</button>
 
