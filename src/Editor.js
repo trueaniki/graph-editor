@@ -75,10 +75,10 @@ export default class Editor extends React.Component {
             method: 'GET',
             ...REQUEST_OPTIONS
         })
-            .then(response => response.text()).catch(err => console.log(err))
+            .then(response => response.json()).catch(err => console.log(err))
             .then(data => {
                 console.log('Editor.js -> eulerianCycle request: ', data);
-                alert(data)
+                alert(data.path.map(vertex => vertex.id).join(','))
             }).catch(err => console.log(err));
     }
     hamiltonianPathRequest(){
@@ -160,6 +160,18 @@ export default class Editor extends React.Component {
                 data.isTree ? alert('Graph is tree') : alert('Graph is not tree');
             }).catch(err => console.log(err));
     }
+    treeReductionRequest(){
+        fetch(URL + '/api/v1/graph/' + this.props.graphId + '/treeReduction', {
+            method: 'GET',
+            ...REQUEST_OPTIONS
+        })
+            .then(response => response.json()).catch(err => console.log(err))
+            .then(data => {
+                console.log('Editor.js -> planarReduction request: ', data);
+                this.props.setGraph(this.prepareGraph(data.planarGraph));
+                this.updateGraphRequest();
+            }).catch(err => console.log(err));
+    }
     isFullRequest(){
         fetch(URL2 + '/api/nodejs/checkFull/', {
             method: 'POST',
@@ -180,6 +192,34 @@ export default class Editor extends React.Component {
             .then(response => response.json()).catch(err => console.log(err))
             .then(data => {
                 this.props.setGraph(data);
+                this.updateGraphRequest();
+            }).catch(err => console.log(err));
+    }
+    cartesianRequest(){
+        let secondGraph = this.props.graphs
+            .find(g => g.name === prompt('Enter second graph name'));
+        fetch(URL + '/api/v1/graph/' + this.props.graphId + ',' + secondGraph + '/cartesian', {
+            method: 'GET',
+            ...REQUEST_OPTIONS
+        })
+            .then(response => response.json()).catch(err => console.log(err))
+            .then(data => {
+                console.log('Editor.js -> planarReduction request: ', data);
+                this.props.setGraph(this.prepareGraph(data.planarGraph));
+                this.updateGraphRequest();
+            }).catch(err => console.log(err));
+    }
+    tensorRequest(){
+        let secondGraph = this.props.graphs
+            .find(g => g.name === prompt('Enter second graph name'));
+        fetch(URL + '/api/v1/graph/' + this.props.graphId + ',' + secondGraph + '/tensor', {
+            method: 'GET',
+            ...REQUEST_OPTIONS
+        })
+            .then(response => response.json()).catch(err => console.log(err))
+            .then(data => {
+                console.log('Editor.js -> planarReduction request: ', data);
+                this.props.setGraph(this.prepareGraph(data.planarGraph));
                 this.updateGraphRequest();
             }).catch(err => console.log(err));
     }
@@ -619,8 +659,11 @@ export default class Editor extends React.Component {
                 <button onClick={this.planarCheckRequest.bind(this)}>Planar check</button>
                 <button onClick={this.planarReductionRequest.bind(this)}>Planar reduction</button>
                 <button onClick={this.isTreeRequest.bind(this)}>Is tree</button>
+                <button onClick={this.treeReductionRequest.bind(this)}>Tree reduction</button>
                 <button onClick={this.isFullRequest.bind(this)}>Is full</button>
                 <button onClick={this.makeFullRequest.bind(this)}>Make full</button>
+                <button onClick={this.cartesianRequest.bind(this)}>Cartesian</button>
+                <button onClick={this.tensorRequest.bind(this)}>Tensor</button>
 
             </div>
         );
