@@ -1,7 +1,7 @@
 import React from 'react'
 // import {v4 as uuid} from 'uuid'
 import getId from "./getId"
-import {VERTEX_SHAPE, VERTEX_RADIUS, URL, REQUEST_OPTIONS} from './constants'
+import {VERTEX_SHAPE, VERTEX_RADIUS, URL, URL2, REQUEST_OPTIONS} from './constants'
 
 export default class Editor extends React.Component {
 
@@ -122,7 +122,6 @@ export default class Editor extends React.Component {
             }).catch(err => console.log(err));
     }
     isTreeRequest(){
-        console.log('Editor.js -> isTreeRequest/125 this.props.graphs[0]: ', JSON.stringify(this.props.graphs[0]));
         fetch(URL + '/api/v1/graph/' + this.props.graphId + '/isTree', {
             method: 'GET',
             ...REQUEST_OPTIONS
@@ -131,6 +130,29 @@ export default class Editor extends React.Component {
             .then(data => {
                 console.log('Editor.js -> isTree request: ', data);
                 data.isTree ? alert('Graph is tree') : alert('Graph is not tree');
+            }).catch(err => console.log(err));
+    }
+    isFullRequest(){
+        fetch(URL2 + '/api/nodejs/checkFull/', {
+            method: 'POST',
+            body: JSON.stringify(this.props.graphs.find(g => g.id === this.props.graphId)),
+            ...REQUEST_OPTIONS
+        })
+            .then(response => response.json()).catch(err => console.log(err))
+            .then(data => {
+                alert(data);
+            }).catch(err => console.log(err));
+    }
+    makeFullRequest(){
+        fetch(URL2 + '/api/nodejs/makeFull/', {
+            method: 'POST',
+            body: JSON.stringify(this.props.graphs.find(g => g.id === this.props.graphId)),
+            ...REQUEST_OPTIONS
+        })
+            .then(response => response.json()).catch(err => console.log(err))
+            .then(data => {
+                this.props.setGraph(data);
+                this.updateGraphRequest();
             }).catch(err => console.log(err));
     }
     findShortestPathRequest(){
@@ -550,6 +572,8 @@ export default class Editor extends React.Component {
                 <button onClick={this.findCenterRequest.bind(this)}>Find center</button>
                 <button onClick={this.planarCheckRequest.bind(this)}>Planar check</button>
                 <button onClick={this.isTreeRequest.bind(this)}>Is tree</button>
+                <button onClick={this.isFullRequest.bind(this)}>Is full</button>
+                <button onClick={this.makeFullRequest.bind(this)}>Make full</button>
 
             </div>
         );
