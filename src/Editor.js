@@ -71,10 +71,10 @@ export default class Editor extends React.Component {
             method: 'GET',
             ...REQUEST_OPTIONS
         })
-            .then(response => response.text()).catch(err => console.log(err))
+            .then(response => response.json()).catch(err => console.log(err))
             .then(data => {
                 console.log('Editor.js -> hamiltonianPath request: ', data);
-                alert(data)
+                alert(data.path.map(vertex => vertex.id).join(','))
             }).catch(err => console.log(err));
     }
     findDiameterRequest(){
