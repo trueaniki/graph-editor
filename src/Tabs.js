@@ -23,7 +23,7 @@ export default class Tabs extends React.Component {
 	}
 	render(){
 		return(
-			<div>
+			<div className={'tabs'}>
 				{this.props.graphs.map(graph =>
 					<Tab key={graph.id}
 						 graph={graph} 

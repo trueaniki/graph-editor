@@ -291,7 +291,7 @@ export default class Editor extends React.Component {
     createNewVertex(x, y) {
         this.vertexes.push({
             x: x | 0, y: y | 0 , id: getId(this.vertexes.map(vertex => vertex.id)),
-            name: '', arcs: [], shape: VERTEX_SHAPE.STROKED
+            name: '', arcs: [], shape: VERTEX_SHAPE.FILLED
         });
     }
 
@@ -511,7 +511,7 @@ export default class Editor extends React.Component {
             this.ctx.beginPath();
             this.ctx.lineWidth = 5;
             vertex.selected ?
-                this.ctx.strokeStyle = this.ctx.fillStyle = 'orange' : this.ctx.strokeStyle = this.ctx.fillStyle = vertex.color || 'black';
+                this.ctx.strokeStyle = this.ctx.fillStyle = 'green' : this.ctx.strokeStyle = this.ctx.fillStyle = vertex.color || 'black';
             this.ctx.arc(vertex.x, vertex.y, VERTEX_RADIUS, 0, 2 * Math.PI);
             this.ctx.stroke();
             vertex.shape === VERTEX_SHAPE.FILLED && this.ctx.fill();
@@ -656,23 +656,24 @@ export default class Editor extends React.Component {
                 <input type="text" placeholder="#000000" onChange={this.handleColorChange.bind(this)}
                        value={this.state.paintingColor}/>
 
+                <hr/>
                 <button onClick={() => this.showVertexIds = !this.showVertexIds}>Show vertexes ids</button>
                 <button onClick={this.handleVertexCount.bind(this)}>Vertexes count</button>
                 <button onClick={this.handleArcCount.bind(this)}>Arcs count</button>
                 <button onClick={this.handleVertexPower.bind(this)}>Vertex power</button>
-                <button onClick={this.findShortestPathRequest.bind(this)}>Find shortest path</button>
-                <button onClick={this.findAllPathsRequest.bind(this)}>Find all paths</button>
-                <button onClick={this.findAllShortestPathsRequest.bind(this)}>Find all shortest paths</button>
+                {/*<button onClick={this.findShortestPathRequest.bind(this)}>Find shortest path</button>*/}
+                {/*<button onClick={this.findAllPathsRequest.bind(this)}>Find all paths</button>*/}
+                {/*<button onClick={this.findAllShortestPathsRequest.bind(this)}>Find all shortest paths</button>*/}
                 <button onClick={this.findDistance.bind(this)}>Find distance</button>
                 <button onClick={this.adjacencyMatrixRequest.bind(this)}>Adjacency matrix</button>
-                <button onClick={this.incidenceMatrixRequest.bind(this)}>Incidence matrix</button>
-                <button onClick={this.eulerianCycleRequest.bind(this)}>Eulerian cycle</button>
+                {/*<button onClick={this.incidenceMatrixRequest.bind(this)}>Incidence matrix</button>*/}
+                {/*<button onClick={this.eulerianCycleRequest.bind(this)}>Eulerian cycle</button>*/}
                 <button onClick={this.hamiltonianPathRequest.bind(this)}>Hamiltonian Path</button>
                 <button onClick={this.findDiameterRequest.bind(this)}>Find diameter</button>
                 <button onClick={this.findRadiusRequest.bind(this)}>Find radius</button>
                 <button onClick={this.findCenterRequest.bind(this)}>Find center</button>
-                <button onClick={this.planarCheckRequest.bind(this)}>Planar check</button>
-                <button onClick={this.planarReductionRequest.bind(this)}>Planar reduction</button>
+                {/*<button onClick={this.planarCheckRequest.bind(this)}>Planar check</button>*/}
+                {/*<button onClick={this.planarReductionRequest.bind(this)}>Planar reduction</button>*/}
                 <button onClick={this.isTreeRequest.bind(this)}>Is tree</button>
                 <button onClick={this.treeReductionRequest.bind(this)}>Tree reduction</button>
                 {/*<button onClick={this.isFullRequest.bind(this)}>Is full</button>*/}

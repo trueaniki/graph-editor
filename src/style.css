@@ -1,9 +1,9 @@
 button {
     display: inline-block;
-    background-color: black;
     color: white;
     font-weight: 700;
     text-decoration: none;
+    background-color: #272727;
     user-select: none;
     padding: .5em 2em;
     outline: none;
@@ -11,24 +11,35 @@ button {
     border-radius: 1px;
     transition: 0.2s;
 }
-button:hover { background: rgb(100,100,100); }
+button:hover { background: rgb(150,150,150); }
 button:active { background: white; }
-
+canvas{
+    background: rgb(245,245,245) linear-gradient(#f4f4f4, #f1f1f1);
+}
 input{
     display: inline-block;
-    background-color: black;
-    color: white;
-    font-weight: 700;
+    font-family: arial,sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    color: rgb(68,68,68);
     text-decoration: none;
     user-select: none;
-    padding: .5em 2em;
+    padding: .2em 1.2em;
     outline: none;
-    border: 2px solid;
-    border-radius: 1px;
-    transition: 0.2s;
+    border: 1px solid rgba(0,0,0,.1);
+    border-radius: 2px;
+    background: rgb(245,245,245) linear-gradient(#f4f4f4, #f1f1f1);
+    transition: all .218s ease 0s;
 }
 
+.tabs{
+    border-bottom: 2px solid;
+    border-radius: 1px;
+    border-bottom-color: rgb(245,245,245);
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+}
 
 body{
-    background-color: rgb(240,240,240);
+    background-color: #272727;
 }
