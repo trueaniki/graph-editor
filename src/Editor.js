@@ -511,11 +511,11 @@ export default class Editor extends React.Component {
             this.ctx.beginPath();
             this.ctx.lineWidth = 5;
             vertex.selected ?
-                this.ctx.strokeStyle = this.ctx.fillStyle = 'orange' : this.ctx.strokeStyle = this.ctx.fillStyle = vertex.color || 'black';
+                this.ctx.strokeStyle = this.ctx.fillStyle = 'red' : this.ctx.strokeStyle = this.ctx.fillStyle = vertex.color || 'white';
             this.ctx.arc(vertex.x, vertex.y, VERTEX_RADIUS, 0, 2 * Math.PI);
             this.ctx.stroke();
             vertex.shape === VERTEX_SHAPE.FILLED && this.ctx.fill();
-            this.ctx.fillStyle = 'black';
+            this.ctx.fillStyle = 'white';
             this.ctx.font = "12px Arial";
             this.showVertexIds && this.ctx.fillText(vertex.id, vertex.x + 1.5 * VERTEX_RADIUS, vertex.y + 1.5 * VERTEX_RADIUS);
             this.ctx.font = vertex.name && "14px Arial";
@@ -529,8 +529,8 @@ export default class Editor extends React.Component {
             arc.vertex1 = this.vertexes.find(v => v.id === arc.vertex1.id);
             arc.vertex2 = this.vertexes.find(v => v.id === arc.vertex2.id);
             //-----------------------
-            this.ctx.strokeStyle = arc.color || 'black';
-            this.ctx.fillStyle = arc.color || 'black';
+            this.ctx.strokeStyle = arc.color || 'white';
+            this.ctx.fillStyle = arc.color || 'white';
             this.ctx.lineWidth = 1;
             let isLoop = false;
 
