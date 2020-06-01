@@ -26,7 +26,7 @@ export default class Editor extends React.Component {
         this.arcs = this.props.graphs.find(graph => graph.id === this.props.graphId).arcs;
     }
     prepareGraph(graph) {
-        if(!graph) throw new Error(`graph array is not array: ${graph}`);
+        if(!graph) throw new Error(`graph is : ${graph}`);
 
         for (let vertex of graph.vertexes) {
             vertex.arcs = [];
@@ -211,18 +211,18 @@ export default class Editor extends React.Component {
             }).catch(err => console.log(err));
     }
     tensorRequest(){
-        let secondGraph = this.props.graphs
-            .find(g => g.name === prompt('Enter second graph name'));
-        fetch(URL + '/api/v1/graph/' + this.props.graphId + ',' + secondGraph + '/tensor', {
-            method: 'GET',
-            ...REQUEST_OPTIONS
-        })
-            .then(response => response.json()).catch(err => console.log(err))
-            .then(data => {
-                console.log('Editor.js -> planarReduction request: ', data);
-                this.props.setGraph(this.prepareGraph(data.planarGraph));
-                this.updateGraphRequest();
-            }).catch(err => console.log(err));
+        // let secondGraph = this.props.graphs
+        //     .find(g => g.name === prompt('Enter second graph name'));
+        // fetch(URL + '/api/v1/graph/' + this.props.graphId + ',' + secondGraph + '/tensor', {
+        //     method: 'GET',
+        //     ...REQUEST_OPTIONS
+        // })
+        //     .then(response => response.json()).catch(err => console.log(err))
+        //     .then(data => {
+        //         console.log('Editor.js -> planarReduction request: ', data);
+        //         this.props.setGraph(this.prepareGraph(data.planarGraph));
+        //         this.updateGraphRequest();
+        //     }).catch(err => console.log(err));
     }
     findShortestPathRequest(){
         let selectedVertexes = this.vertexes.filter(vertex => vertex.selected).sort((v1, v2) => v2.timestamp - v1.timestamp);
