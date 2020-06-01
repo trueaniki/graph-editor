@@ -371,6 +371,9 @@ export default class Editor extends React.Component {
             }
         }
         if(selectedArcId) this.arcs = this.arcs.filter(a => a.id !== selectedArcId);
+        for(let v of this.vertexes) {
+            v.arcs = v.arcs.filter(a => a !== selectedArcId);
+        }
     }
 
     updateAngles(arc) {
