@@ -162,14 +162,14 @@ export default class Editor extends React.Component {
             }).catch(err => console.log(err));
     }
     treeReductionRequest(){
-        fetch(URL + '/api/v1/graph/' + this.props.graphId + '/treeReduction', {
+        fetch(URL + '/api/v1/graph/' + this.props.graphId + '/tree', {
             method: 'GET',
             ...REQUEST_OPTIONS
         })
             .then(response => response.json()).catch(err => console.log(err))
             .then(data => {
-                console.log('Editor.js -> planarReduction request: ', data);
-                this.props.setGraph(this.prepareGraph(data.planarGraph));
+                console.log('Editor.js -> treeReduction request: ', data);
+                this.props.setGraph(this.prepareGraph(data.tree));
                 this.updateGraphRequest();
             }).catch(err => console.log(err));
     }
@@ -199,14 +199,14 @@ export default class Editor extends React.Component {
     cartesianRequest(){
         let secondGraph = this.props.graphs
             .find(g => g.name === prompt('Enter second graph name'));
-        fetch(URL + '/api/v1/graph/' + this.props.graphId + ',' + secondGraph + '/cartesian', {
+        fetch(URL + '/api/v1/graph/' + this.props.graphId + ',' + secondGraph.id + '/cartesian', {
             method: 'GET',
             ...REQUEST_OPTIONS
         })
             .then(response => response.json()).catch(err => console.log(err))
             .then(data => {
                 console.log('Editor.js -> planarReduction request: ', data);
-                this.props.setGraph(this.prepareGraph(data.planarGraph));
+                this.props.setGraph(this.prepareGraph(data.cartesian));
                 this.updateGraphRequest();
             }).catch(err => console.log(err));
     }
@@ -253,6 +253,9 @@ export default class Editor extends React.Component {
                     else alert('no path');
                 }).catch(err => console.log(err));
         }
+        // if(selectedVertexes.length === 2) {
+        //     alert(selectedVertexes[0].id, selectedVertexes[1].id);
+        // }
     }
     findAllShortestPathsRequest(){
         let selectedVertexes = this.vertexes.filter(vertex => vertex.selected).sort((v1, v2) => v2.timestamp - v1.timestamp);
@@ -287,7 +290,7 @@ export default class Editor extends React.Component {
 
     createNewVertex(x, y) {
         this.vertexes.push({
-            x, y, id: getId(this.vertexes.map(vertex => vertex.id)),
+            x: x | 0, y: y | 0 , id: getId(this.vertexes.map(vertex => vertex.id)),
             name: '', arcs: [], shape: VERTEX_SHAPE.STROKED
         });
     }
