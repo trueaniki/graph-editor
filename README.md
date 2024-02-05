@@ -1,1 +1,1 @@
-# Открыть приложение в браузере: -> build/index.html
+# Graph editor on pure JavaScript
